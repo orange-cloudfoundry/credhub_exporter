@@ -28,8 +28,8 @@ var (
 	).Envar("CREDHUB_EXPORTER_CLIENT_SECRET").Required().String()
 
 	caCertPath = kingpin.Flag(
-		"credhub.ca-cert-path", "Credhub Client CA certificate path ($CREDHUB_EXPORTER_CA_CERT_PATH)",
-	).Envar("CREDHUB_EXPORTER_CA_CERT_PATH").String()
+		"credhub.ca-certs-path", "Credhub Client CA certificates path ($CREDHUB_EXPORTER_CA_CERTS_PATH)",
+	).Envar("CREDHUB_EXPORTER_CA_CERTS_PATH").String()
 
 	credhubProxy = kingpin.Flag(
 		"credhub.proxy", "Credhub Client Secret ($CREDHUB_EXPORTER_CLIENT_SECRET)",
@@ -46,6 +46,10 @@ var (
 	metricsEnvironment = kingpin.Flag(
 		"metrics.environment", "Environment label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_ENVIRONMENT)",
 	).Envar("CREDHUB_EXPORTER_METRICS_ENVIRONMENT").Required().String()
+
+	metricsDirector = kingpin.Flag(
+		"metrics.director-name", "Director label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_DIRECTOR)",
+	).Envar("CREDHUB_EXPORTER_METRICS_DIRECTOR").Required().String()
 
 	skipSSLValidation = kingpin.Flag(
 		"skip-ssl-verify", "Disable SSL Verify ($CREDHUB_EXPORTER_SKIP_SSL_VERIFY)",
@@ -172,7 +176,7 @@ func main() {
 	}
 
 	// todo cacert
-	credhubCollector := NewCredhubCollector("sph-xmt", *metricsEnvironment, filters, credhubCli)
+	credhubCollector := NewCredhubCollector(*metricsDirector, *metricsEnvironment, filters, credhubCli)
 	prometheus.MustRegister(credhubCollector)
 
 	handler := prometheusHandler()
