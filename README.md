@@ -1,6 +1,6 @@
 # Credhub Prometheus Exporter [![Build Status](https://travis-ci.org/orange-cloudfoundry/credhub_exporter.png)](https://travis-ci.org/orange-cloudfoundry/credhub_exporter)
 
-A [Prometheus][prometheus] exporter for [Credhub][credhub]. Please refer to the [FAQ][faq] for general questions about this exporter.
+A [Prometheus][prometheus] exporter for [Credhub][credhub].
 
 
 ## Installation
