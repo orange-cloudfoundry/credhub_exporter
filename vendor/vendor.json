@@ -1,0 +1,282 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "JuX+4MLlKO0l1Tv8jyq9szrcfiM=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "98fruMIvCcRWDc6bILQpZfnfnc0=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/auth",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "ffGjDalon56T0Dk4XtFhWqnKasM=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/auth/uaa",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "tDsDq/rxoYM/UGOzL2vBZQq2shc=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/credentials",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "1bSG5vE45E+uXfhEBN2Np0It/HM=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/credentials/generate",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "HRIcBicBvCF7MKi6P+A5bavpab0=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/credentials/values",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "2LQgQ5r6OrrKX24mpXoELHzv3nA=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/permissions",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "uyO4Y+9P3m8H6Gxrz2i2wSBuGO4=",
+			"path": "code.cloudfoundry.org/credhub-cli/credhub/server",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "AU6WhNKEtIQ2zE78F+F3f/g1qyg=",
+			"path": "code.cloudfoundry.org/credhub-cli/errors",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "KmjnydoAbofMieIWm+it5OWERaM=",
+			"path": "github.com/alecthomas/template",
+			"revision": "a0175ee3bccc567396460bf5acd36800cb10c49c",
+			"revisionTime": "2016-04-05T07:15:01Z"
+		},
+		{
+			"checksumSHA1": "3wt0pTXXeS+S93unwhGoLIyGX/Q=",
+			"path": "github.com/alecthomas/template/parse",
+			"revision": "a0175ee3bccc567396460bf5acd36800cb10c49c",
+			"revisionTime": "2016-04-05T07:15:01Z"
+		},
+		{
+			"checksumSHA1": "fCc3grA7vIxfBru7R3SqjcW+oLI=",
+			"path": "github.com/alecthomas/units",
+			"revision": "2efee857e7cfd4f3d0138cc3cbb1b4966962b93a",
+			"revisionTime": "2015-10-22T06:55:26Z"
+		},
+		{
+			"checksumSHA1": "0rido7hYHQtfq3UJzVT5LClLAWc=",
+			"path": "github.com/beorn7/perks/quantile",
+			"revision": "3a771d992973f24aa725d07868b467d1ddfceafb",
+			"revisionTime": "2018-03-21T16:47:47Z"
+		},
+		{
+			"checksumSHA1": "1lxJTACtMFrpoSHJHC5bjSfQn7g=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/github.com/cloudfoundry/go-socks5",
+			"path": "github.com/cloudfoundry/go-socks5",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "s0j+oq+c5j/FHuNdDybBhYGQAb8=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/github.com/cloudfoundry/socks5-proxy",
+			"path": "github.com/cloudfoundry/socks5-proxy",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "uuLcVQXUw0CNt8Y5tsmzLWGlixI=",
+			"path": "github.com/golang/protobuf/proto",
+			"revision": "89a0c16f4dc2a70c0ed864d8ef64878f24fdaa51",
+			"revisionTime": "2018-08-04T22:03:15Z"
+		},
+		{
+			"checksumSHA1": "9w1ZtxhdB/J0qqNPJQNNI/ZTwwE=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/github.com/hashicorp/go-version",
+			"path": "github.com/hashicorp/go-version",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "bKMZjd2wPw13VwoE7mBeSv5djFA=",
+			"path": "github.com/matttproud/golang_protobuf_extensions/pbutil",
+			"revision": "c12348ce28de40eed0136aa2b644d0ee0650e56c",
+			"revisionTime": "2016-04-24T11:30:07Z"
+		},
+		{
+			"checksumSHA1": "vuxZYORrJkB2dB6OXtqVCfT7+0I=",
+			"path": "github.com/prometheus/client_golang/prometheus",
+			"revision": "5b23715facdef1452016bae512489c3cdf82458c",
+			"revisionTime": "2018-08-08T08:05:07Z"
+		},
+		{
+			"checksumSHA1": "V8xkqgmP66sq2ZW4QO5wi9a4oZE=",
+			"path": "github.com/prometheus/client_model/go",
+			"revision": "5c3871d89910bfb32f5fcab2aa4b9ec68e65a99f",
+			"revisionTime": "2018-07-12T10:51:10Z"
+		},
+		{
+			"checksumSHA1": "Q0mjhUEjAklUQvPkrOChWGLpvRY=",
+			"path": "github.com/prometheus/common/expfmt",
+			"revision": "c7de2306084e37d54b8be01f3541a8464345e9a5",
+			"revisionTime": "2018-08-01T06:44:54Z"
+		},
+		{
+			"checksumSHA1": "GWlM3d2vPYyNATtTFgftS10/A9w=",
+			"path": "github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg",
+			"revision": "c7de2306084e37d54b8be01f3541a8464345e9a5",
+			"revisionTime": "2018-08-01T06:44:54Z"
+		},
+		{
+			"checksumSHA1": "MGnqHnmEqc1fjnYiWReSiW8C27A=",
+			"path": "github.com/prometheus/common/log",
+			"revision": "c7de2306084e37d54b8be01f3541a8464345e9a5",
+			"revisionTime": "2018-08-01T06:44:54Z"
+		},
+		{
+			"checksumSHA1": "EXTRY7DL9gFW8c341Dk6LDXCBn8=",
+			"path": "github.com/prometheus/common/model",
+			"revision": "c7de2306084e37d54b8be01f3541a8464345e9a5",
+			"revisionTime": "2018-08-01T06:44:54Z"
+		},
+		{
+			"checksumSHA1": "91KYK0SpvkaMJJA2+BcxbVnyRO0=",
+			"path": "github.com/prometheus/common/version",
+			"revision": "c7de2306084e37d54b8be01f3541a8464345e9a5",
+			"revisionTime": "2018-08-01T06:44:54Z"
+		},
+		{
+			"checksumSHA1": "jo/zxF+Pfj5yZjReTKGOACq9IBs=",
+			"path": "github.com/prometheus/procfs",
+			"revision": "05ee40e3a273f7245e8777337fc7b46e533a9a92",
+			"revisionTime": "2018-07-25T12:39:19Z"
+		},
+		{
+			"checksumSHA1": "lv9rIcjbVEGo8AT1UCUZXhXrfQc=",
+			"path": "github.com/prometheus/procfs/internal/util",
+			"revision": "05ee40e3a273f7245e8777337fc7b46e533a9a92",
+			"revisionTime": "2018-07-25T12:39:19Z"
+		},
+		{
+			"checksumSHA1": "HSP5hVT0CNMRa8+Xtz4z2Ic5U0E=",
+			"path": "github.com/prometheus/procfs/nfs",
+			"revision": "05ee40e3a273f7245e8777337fc7b46e533a9a92",
+			"revisionTime": "2018-07-25T12:39:19Z"
+		},
+		{
+			"checksumSHA1": "yItvTQLUVqm/ArLEbvEhqG0T5a0=",
+			"path": "github.com/prometheus/procfs/xfs",
+			"revision": "05ee40e3a273f7245e8777337fc7b46e533a9a92",
+			"revisionTime": "2018-07-25T12:39:19Z"
+		},
+		{
+			"checksumSHA1": "9y/iQh3/YtX31wAu7eJravtjTro=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "8c0189d9f6bbf301e5d055d34268156b317016af",
+			"revisionTime": "2018-02-13T14:31:10Z"
+		},
+		{
+			"checksumSHA1": "IQkUIOnvlf0tYloFx9mLaXSvXWQ=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/curve25519",
+			"path": "golang.org/x/crypto/curve25519",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "VqyzfAMKyP6SoLnPHcwhkrICBo0=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ed25519",
+			"path": "golang.org/x/crypto/ed25519",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "0JTAFXPkankmWcZGQJGScLDiaN8=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ed25519/internal/edwards25519",
+			"path": "golang.org/x/crypto/ed25519/internal/edwards25519",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "hfABw6DX9B4Ma+88qDDGz9qY45s=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/internal/chacha20",
+			"path": "golang.org/x/crypto/internal/chacha20",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "kVKE0OX1Xdw5mG7XKT86DLLKE2I=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/poly1305",
+			"path": "golang.org/x/crypto/poly1305",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "P23qZ/7bvTeahYJCUbcIDtqCzus=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ssh",
+			"path": "golang.org/x/crypto/ssh",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "6U7dCaxxIMjf5V02iWgyAwppczw=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "91a49db82a88618983a78a06c1cbd4e00ab749ab",
+			"revisionTime": "2018-02-28T15:18:34Z"
+		},
+		{
+			"checksumSHA1": "GtamqiJoL7PGHsN454AoffBFMa8=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/net/context",
+			"path": "golang.org/x/net/context",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "r9l4r3H6FOLQ0c2JaoXpopFjpnw=",
+			"origin": "code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/net/proxy",
+			"path": "golang.org/x/net/proxy",
+			"revision": "3bc00480766b9b0077108adcf42c45a4ad2578dc",
+			"revisionTime": "2018-07-18T14:45:40Z"
+		},
+		{
+			"checksumSHA1": "f3Wxw5WLLQ3ss7Fn2lBZiMzj6NQ=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "0ffbfd41fbef8ffcf9b62b0b0aa3a5873ed7a4fe",
+			"revisionTime": "2018-08-02T19:25:30Z"
+		},
+		{
+			"checksumSHA1": "Hi7BmkvZh4plNNLGDHfPnCKy3i8=",
+			"path": "golang.org/x/sys/windows",
+			"revision": "0ffbfd41fbef8ffcf9b62b0b0aa3a5873ed7a4fe",
+			"revisionTime": "2018-08-02T19:25:30Z"
+		},
+		{
+			"checksumSHA1": "P9OIhD26uWlIST/me4TYnvseCoY=",
+			"path": "golang.org/x/sys/windows/registry",
+			"revision": "0ffbfd41fbef8ffcf9b62b0b0aa3a5873ed7a4fe",
+			"revisionTime": "2018-08-02T19:25:30Z"
+		},
+		{
+			"checksumSHA1": "uVlUSSKplihZG7N+QJ6fzDZ4Kh8=",
+			"path": "golang.org/x/sys/windows/svc/eventlog",
+			"revision": "0ffbfd41fbef8ffcf9b62b0b0aa3a5873ed7a4fe",
+			"revisionTime": "2018-08-02T19:25:30Z"
+		},
+		{
+			"checksumSHA1": "sToCp8GThnMnsBzsHv+L/tBYQrQ=",
+			"path": "gopkg.in/alecthomas/kingpin.v2",
+			"revision": "947dcec5ba9c011838740e680966fd7087a71d0d",
+			"revisionTime": "2017-12-17T18:08:21Z"
+		}
+	],
+	"rootPath": "github.com/orange-cloudfoundry/credhub_exporter"
+}
