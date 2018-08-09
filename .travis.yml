@@ -1,37 +1,33 @@
 sudo: required
-
 language: go
-
 go_import_path: github.com/orange-cloudfoundry/credhub_exporter
-
 services:
-  - docker
+- docker
+jobs:
+  include:
+  - stage: Build docker image
+    env:
+      - DOCKER_IMAGE_NAME=orangeopensource/credhub-exporter
+      - secure: "fubWleuoBw5oDReAYupFaBQ6XI93TjEvYjcyVI5wVoFChf2LC9qj5O4gHGk8T6kaJ+Su6luTdTvY84oc8SkagXnt+jJHTcGFQrSfTQH1vcXMBg86IqDIqVT58mbJ40E+obxbgBH+mO2PziS+wTDjq8NSqdNqIffT3X0he7uFsJnh7BOQJMoLaKcmO5fiAbuIV6cJ5WULHLn9WDAxVy6oKyIJb76KRYhVjsVPhrV19oSdaGnucPg3u+WQ+ES8hfGD9YsK48PIbOM23+aZFh3YGR4nEqJXoQWMCOPSkk1GMrdVSdXvdGHy7b+QEMq3Y3lv7L9F5Y58HWbsCQn9ORIN2R5vKdeQbiFu5K59ye3b1a4kypdIAtUYO1Au4B8mrglCCAWpHPx9P8Bc96KNnGZRSo3lMzGJq2G0C01RkLzlNYTAGe1ySDBflcmk8+ylRQaFqeFslxdGq9sboKjbE/b676kb9PqX5j4UjirEAkFJcBUd/AdhvglHtkZstCKI/LNIjKo5NMR0+DoQZ6ZfwoUtBzYJWqWc5Muuzw5AGj61j2QTJKTOiJJDJw6sL/h8IbdfgWCIQetU8K2/+/E7zlyi8g9xKILBR1UYcdKmKQeSEaPWW5eQR72wEjHs1P6TJo4gL+09S560Ee4fnWfA40IaI4GhRFHFWZZfDv1XgaAonjQ="
+      - secure: "qqguoBQIh42lohtim5HzNP3zL2UujqbjX2Hhwu9M4qj218ckeqo9mkipzbeqxVnqPB3Sez/uHpP8quGy4fhb+CQ+otxR/EDYGD3DAUckRDmLo6lFCsIfr4sKciPeAe3F6Tld7V9erTNBVBv23zRFXeFP0+2CGe0MQDEjXf6bIGL301vrQ3zDbxkxZavuAU8Ts30LP0J7nZUfWrYBPl7Adt+5EVT1BNCBmUjfzDr5kFaJDavXdBpcc2bp/v6ZwXlYLQL5o6fA8R06mbM4+fzh6ZPfvoU2kIMycyt23v7w5iTuJYBXEgUaDhqiVpI4XmvksPlfTu3KcEOBldkBaHo1wl/jlmC/2fsSgJPMXSMASzk1iIao6d/hKNgrwZsq7I0lM/rCkBCWfWeKfAyhMzWtB+va904q1UzOK0cyJl/MSJULaQftaBtdscyBpPAE3FXre7FAAY3R/wCrKYo2LFXwYXg7luNNJ+Zx0KNEzEcnHdqRwahUl95MgqEk/8OzDSfZ7Ncbp3TwZ6tiLZ/vG3uEJIR4mAui5/hjGYR5TTt4LAA5bnQGfeYBYFM2yhNI1TpMD4ICzcZs9xDfA0Si9Kih2iRBgarbHELw4k2MJ5NwUFmi0I972z3hKxlfn4knyLZ0k/QA+0YYCe1yZds/VVDV0SY5wSE/ID/d2pAAsGH1H1I="
+    script:
+    - make crossbuild
+    - ln -s .build/linux-amd64/credhub_exporter credhub_exporter
+    - |
+      if [ -n "$TRAVIS_TAG" ]; then
+        make docker DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME DOCKER_IMAGE_TAG=$TRAVIS_TAG
+      else
+        make docker DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME DOCKER_IMAGE_TAG=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+      fi
+    - |
+      if [[ "$TRAVIS_TAG" =~ ^v[0-9]+(\.[0-9]+){2}$ ]]; then
+        docker tag "$DOCKER_IMAGE_NAME:$TRAVIS_TAG" "$DOCKER_IMAGE_NAME:latest"
+      fi
+    - docker images
+    - |
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+        docker push $DOCKER_IMAGE_NAME
+      fi
 
 
-# jobs:
-#   include:
-#     - stage: Run tests
-#       script: make test
-
-#     - stage: Build docker image
-#       env:
-#         - DOCKER_IMAGE_NAME=psycofdj/credhub-exporter
-#       script:
-#         - make crossbuild
-#         - ln -s .build/linux-amd64/credhub_exporter credhub_exporter
-#         - |
-#           if [ -n "$TRAVIS_TAG" ]; then
-#             make docker DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME DOCKER_IMAGE_TAG=$TRAVIS_TAG
-#           else
-#             make docker DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME DOCKER_IMAGE_TAG=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-#           fi
-#         - |
-#           if [[ "$TRAVIS_TAG" =~ ^v[0-9]+(\.[0-9]+){2}$ ]]; then
-#             docker tag "$DOCKER_IMAGE_NAME:$TRAVIS_TAG" "$DOCKER_IMAGE_NAME:latest"
-#           fi
-#         - docker images
-#         - |
-#           if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-#             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-#             docker push $DOCKER_IMAGE_NAME
-#           fi
