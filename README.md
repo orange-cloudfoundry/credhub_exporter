@@ -38,7 +38,7 @@ $ docker run -p 9358:9358 orange-cloudfoundry/credhub-exporter <flags>
 
 ### UAA Client
 
-In order to connect to the [Credhub API][cf_api] a `client-id` and `client-secret` must be provided. The `client-id` must have the `creadhub.read` authority.
+In order to connect to the [Credhub API][credhub_api] a `client-id` and `client-secret` must be provided. The `client-id` must have the `creadhub.read` authority.
 
 For example, to create a new `client-id` and `client-secret` with the right permissions:
 
@@ -93,6 +93,7 @@ Apache License 2.0, see [LICENSE][license].
 
 [binaries]: https://github.com/orange-cloudfoundry/credhub_exporter/releases
 [credhub]: https://github.com/cloudfoundry-incubator/credhub
+[credhub_api]: https://credhub-api.cfapps.io/
 [cloudfoundry]: https://www.cloudfoundry.org/
 [contributing]: https://github.com/orange-cloudfoundry/credhub_exporter/blob/master/CONTRIBUTING.md
 [faq]: https://github.com/bosh-prometheus/credhub_exporter/blob/master/FAQ.md
