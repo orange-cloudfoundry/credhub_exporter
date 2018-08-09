@@ -27,7 +27,7 @@ $ credhub_exporter <flags>
 To run the credhub exporter as a Docker container, run:
 
 ```bash
-$ docker run -p 9358:9358 orange-cloudfoundry/credhub-exporter <flags>
+$ docker run -p 9358:9358 orangeopensource/credhub-exporter <flags>
 ```
 
 <!-- ### BOSH -->
