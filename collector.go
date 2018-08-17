@@ -26,6 +26,7 @@ type CredhubCollector struct {
 	credentialMetrics         *prometheus.GaugeVec
 	certificateExpiresMetrics *prometheus.GaugeVec
 	scrapeErrorMetric         prometheus.Gauge
+	lastScrapeTimestampMetric prometheus.Gauge
 }
 
 // NewCredhubCollector -
@@ -40,7 +41,7 @@ func NewCredhubCollector(
 			Namespace:   "credhub",
 			Subsystem:   "credential",
 			Name:        "created_at",
-			Help:        "Credhub credential generation unix timestamp (seconds from epoch)",
+			Help:        "Number of seconds since 1970 since last rotation of credhub credential",
 			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
 		},
 		[]string{"path", "name", "id"},
@@ -51,7 +52,7 @@ func NewCredhubCollector(
 			Namespace:   "credhub",
 			Subsystem:   "certificate",
 			Name:        "expires_at",
-			Help:        "Credhub certificate expire unix timestamp (seconds from epoch)",
+			Help:        "Number of seconds since 1970 until certificate will expire",
 			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
 		},
 		[]string{"path", "name", "id", "index"},
@@ -67,12 +68,23 @@ func NewCredhubCollector(
 		},
 	)
 
+	lastScrapeTimesptampMetric := prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Namespace:   "credhub",
+			Subsystem:   "",
+			Name:        "last_scrape_timestamp",
+			Help:        "Number of seconds since 1970 since last scrape of metrics from credhub.",
+			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
+		},
+	)
+
 	return &CredhubCollector{
 		cli:                       cli,
 		filters:                   filters,
 		credentialMetrics:         credentialMetrics,
 		certificateExpiresMetrics: certificateExpiresMetrics,
 		scrapeErrorMetric:         scrapeErrorMetric,
+		lastScrapeTimestampMetric: lastScrapeTimesptampMetric,
 	}
 }
 
@@ -123,6 +135,7 @@ func (c CredhubCollector) filterCertificates(name string, cred credentials.Crede
 func (c CredhubCollector) Collect(ch chan<- prometheus.Metric) {
 	log.Debugf("collecting credhub metrics")
 	c.scrapeErrorMetric.Set(0.0)
+	c.lastScrapeTimestampMetric.Set(float64(time.Now().Unix()))
 
 	results, err := c.cli.FindByPartialName("")
 	if err != nil {
@@ -160,9 +173,12 @@ func (c CredhubCollector) Collect(ch chan<- prometheus.Metric) {
 	c.credentialMetrics.Collect(ch)
 	c.certificateExpiresMetrics.Collect(ch)
 	c.scrapeErrorMetric.Collect(ch)
+	c.lastScrapeTimestampMetric.Collect(ch)
 }
 
 func (c CredhubCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.credentialMetrics.Describe(ch)
 	c.certificateExpiresMetrics.Describe(ch)
+	c.scrapeErrorMetric.Describe(ch)
+	c.lastScrapeTimestampMetric.Describe(ch)
 }
