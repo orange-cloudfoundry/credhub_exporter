@@ -105,7 +105,6 @@ func (c CredhubCollector) searchCertificate(name string, cred credentials.Creden
 			break
 		}
 		certificate := raw[start : stop+len(endCertificate)]
-		log.Debugf("extract certificate: [%s]", certificate)
 		certs = append(certs, certificate)
 		raw = raw[stop+len(endCertificate) : len(raw)-1]
 	}
