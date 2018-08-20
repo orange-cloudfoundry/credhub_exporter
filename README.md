@@ -1,6 +1,6 @@
 # Credhub Prometheus Exporter [![Build Status](https://travis-ci.org/orange-cloudfoundry/credhub_exporter.png)](https://travis-ci.org/orange-cloudfoundry/credhub_exporter)
 
-A [Prometheus][prometheus] exporter for [Credhub][credhub].
+A [Prometheus][prometheus] exporter for [Credhub][credhub]. The exporter currently only exports metrics related to credhub objects, including [certificate](https://github.com/cloudfoundry-incubator/credhub/blob/master/docs/credential-types.md) objects (it does not yet provide metrics about the credhub server health such as error rates, response times, or total number of entries).
 
 
 ## Installation
@@ -64,7 +64,7 @@ uaac client add prometheus-credhub \
 | `filters.generic-certificates`<br />`CREDHUB_EXPORTER_GENERIC_CERTIFICATES` | No       | `[]`       | Json list of <regexp> to match generic credentials paths that may contains certificates                                                                                                                                               |
 | `metrics.director-name`<br />`CREDHUB_EXPORTER_METRICS_DIRECTOR`            | Yes      | `bosh`     | Director label to be attached to metrics                                                                                                                                                                                              |
 | `metrics.namespace`<br />`CREDHUB_EXPORTER_METRICS_NAMESPACE`               | No       | `credhub`  | Metrics Namespace                                                                                                                                                                                                                     |
-| `metrics.environment`<br />`CREDHUB_EXPORTER_METRICS_ENVIRONMENT`           | Yes      |            | Environment label to be attached to metrics                                                                                                                                                                                           |
+| `metrics.environment`<br />`CREDHUB_EXPORTER_METRICS_ENVIRONMENT`           | Yes      |            | Credhub Environment label to be attached to metrics                                                                                                                                                                                           |
 | `skip-ssl-verify`<br />`CREDHUB_EXPORTER_SKIP_SSL_VERIFY`                   | No       | `false`    | Disable SSL Verify                                                                                                                                                                                                                    |
 | `web.listen-address`<br />`CREDHUB_EXPORTER_WEB_LISTEN_ADDRESS`             | No       | `:9358`    | Address to listen on for web interface and telemetry                                                                                                                                                                                  |
 | `web.telemetry-path`<br />`CREDHUB_EXPORTER_WEB_TELEMETRY_PATH`             | No       | `/metrics` | Path under which to expose Prometheus metrics                                                                                                                                                                                         |
@@ -76,13 +76,13 @@ uaac client add prometheus-credhub \
 
 ### Metrics
 
-The exporter returns the following `Applications` metrics:
+The exporter returns the following credhub objects metrics:
 
 | Metric                                     | Description                                                            | Labels                                                   |
 | ------                                     | -----------                                                            | ------                                                   |
-| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of given credential | `director`, `environment`, `id`, `name`, `path`          |
-| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expire time of the certificate                   | `director`, `environment`, `id`, `name`, `path`, `index` |
-| *metrics.namespace*_last_scrap_error       | Number of credential that exporter failed read during last scrape      | `director`, `environment`                                |
+| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential | `director`, `environment`, `id`, `name`, `path`          |
+| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate                   | `director`, `environment`, `id`, `name`, `path`, `index` |
+| *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape      | `director`, `environment`                                |
 
 ## Contributing
 
