@@ -1,6 +1,6 @@
 # Credhub Prometheus Exporter [![Build Status](https://travis-ci.org/orange-cloudfoundry/credhub_exporter.png)](https://travis-ci.org/orange-cloudfoundry/credhub_exporter)
 
-A [Prometheus][prometheus] exporter for [Credhub][credhub].
+A [Prometheus][prometheus] exporter for [Credhub][credhub]. The exporter currently only exports metrics related to credhub objects, including [certificate](https://github.com/cloudfoundry-incubator/credhub/blob/master/docs/credential-types.md) objects (it does not yet provide metrics about the credhub server health such as error rates, response times, or total number of entries).
 
 
 ## Installation
@@ -76,12 +76,12 @@ uaac client add prometheus-credhub \
 
 ### Metrics
 
-The exporter returns the following `Applications` metrics:
+The exporter returns the following credhub objects metrics:
 
 | Metric                                     | Description                                                            | Labels                                                   |
 | ------                                     | -----------                                                            | ------                                                   |
-| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of given credential | `director`, `environment`, `id`, `name`, `path`          |
-| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of the certificate                   | `director`, `environment`, `id`, `name`, `path`, `index` |
+| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential | `director`, `environment`, `id`, `name`, `path`          |
+| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate                   | `director`, `environment`, `id`, `name`, `path`, `index` |
 | *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape      | `director`, `environment`                                |
 
 ## Contributing
