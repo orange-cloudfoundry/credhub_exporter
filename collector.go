@@ -23,6 +23,8 @@ const (
 type CredhubCollector struct {
 	filters                   []*regexp.Regexp
 	cli                       *credhub.CredHub
+	nameLike                  string
+	path                      string
 	credentialMetrics         *prometheus.GaugeVec
 	certificateExpiresMetrics *prometheus.GaugeVec
 	scrapeErrorMetric         prometheus.Gauge
@@ -31,7 +33,7 @@ type CredhubCollector struct {
 
 // NewCredhubCollector -
 func NewCredhubCollector(
-	director string,
+	deployment string,
 	environment string,
 	filters []*regexp.Regexp,
 	cli *credhub.CredHub) *CredhubCollector {
@@ -42,7 +44,7 @@ func NewCredhubCollector(
 			Subsystem:   "credential",
 			Name:        "created_at",
 			Help:        "Number of seconds since 1970 since last rotation of credhub credential",
-			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
+			ConstLabels: prometheus.Labels{"environment": environment, "deployment": deployment},
 		},
 		[]string{"path", "name", "id"},
 	)
@@ -53,7 +55,7 @@ func NewCredhubCollector(
 			Subsystem:   "certificate",
 			Name:        "expires_at",
 			Help:        "Number of seconds since 1970 until certificate will expire",
-			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
+			ConstLabels: prometheus.Labels{"environment": environment, "deployment": deployment},
 		},
 		[]string{"path", "name", "id", "index"},
 	)
@@ -64,7 +66,7 @@ func NewCredhubCollector(
 			Subsystem:   "",
 			Name:        "last_scrap_error",
 			Help:        "Whether the last scrape of Applications metrics from Credhub resulted in an error (1 for error, 0 for success)",
-			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
+			ConstLabels: prometheus.Labels{"environment": environment, "deployment": deployment},
 		},
 	)
 
@@ -74,18 +76,28 @@ func NewCredhubCollector(
 			Subsystem:   "",
 			Name:        "last_scrape_timestamp",
 			Help:        "Number of seconds since 1970 since last scrape of metrics from credhub.",
-			ConstLabels: prometheus.Labels{"environment": environment, "director": director},
+			ConstLabels: prometheus.Labels{"environment": environment, "deployment": deployment},
 		},
 	)
 
 	return &CredhubCollector{
 		cli:                       cli,
 		filters:                   filters,
+		nameLike:                  "",
+		path:                      "",
 		credentialMetrics:         credentialMetrics,
 		certificateExpiresMetrics: certificateExpiresMetrics,
 		scrapeErrorMetric:         scrapeErrorMetric,
 		lastScrapeTimestampMetric: lastScrapeTimesptampMetric,
 	}
+}
+
+func (c CredhubCollector) filterNameLike(name string) {
+	c.nameLike = name
+}
+
+func (c CredhubCollector) filterPath(path string) {
+	c.path = path
 }
 
 func (c CredhubCollector) processCertificates(path string, name string, id string, certificates string) error {
@@ -137,7 +149,19 @@ func (c CredhubCollector) Collect(ch chan<- prometheus.Metric) {
 	c.scrapeErrorMetric.Set(0.0)
 	c.lastScrapeTimestampMetric.Set(float64(time.Now().Unix()))
 
-	results, err := c.cli.FindByPartialName("")
+	var (
+		results credentials.FindResults
+		err     error
+	)
+
+	if c.nameLike != "" {
+		results, err = c.cli.FindByPartialName(c.nameLike)
+	} else if c.path != "" {
+		results, err = c.cli.FindByPath(c.path)
+	} else {
+		results, err = c.cli.FindByPartialName("")
+	}
+
 	if err != nil {
 		log.Errorf("Error fethings credentials from credhub: %s", err.Error())
 		c.scrapeErrorMetric.Set(1.0)

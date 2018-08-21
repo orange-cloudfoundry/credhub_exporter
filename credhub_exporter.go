@@ -35,6 +35,14 @@ var (
 		"credhub.proxy", "Credhub Client Secret ($CREDHUB_EXPORTER_CLIENT_SECRET)",
 	).Envar("CREDHUB_EXPORTER_PROXY").Default("").String()
 
+	filterNameLike = kingpin.Flag(
+		"filters.name-like", "Fetch credentials whose name contains the query string (fetch all credentials when empty)",
+	).Envar("CREDHUB_EXPORTER_FILTER_NAMELIKE").Default("").String()
+
+	filterPath = kingpin.Flag(
+		"filters.path", "Fetch credentials that exist under the provided path (ignored when --filters.name-like is not empty)",
+	).Envar("CREDHUB_EXPORTER_FILTER_PATH").Default("").String()
+
 	genericCertificateFilter = kingpin.Flag(
 		"filters.generic-certificates", "Json list of <regexp> to match generic credentials paths that may contains certificates",
 	).Envar("CREDHUB_EXPORTER_GENERIC_CERTIFICATES").Default("[]").String()
@@ -44,12 +52,12 @@ var (
 	).Envar("CREDHUB_EXPORTER_METRICS_NAMESPACE").Default("credhub").String()
 
 	metricsEnvironment = kingpin.Flag(
-		"metrics.environment", "Environment label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_ENVIRONMENT)",
+		"metrics.environment", "Credhub environment label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_ENVIRONMENT)",
 	).Envar("CREDHUB_EXPORTER_METRICS_ENVIRONMENT").Required().String()
 
-	metricsDirector = kingpin.Flag(
-		"metrics.director-name", "Director label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_DIRECTOR)",
-	).Envar("CREDHUB_EXPORTER_METRICS_DIRECTOR").Required().String()
+	metricsDeployment = kingpin.Flag(
+		"metrics.deployment-name", "Credhub Bosh Deployment Name to be reported as the deployment metric label ($CREDHUB_EXPORTER_METRICS_DEPLOYMENT)",
+	).Envar("CREDHUB_EXPORTER_METRICS_DEPLOYMENT").Required().String()
 
 	skipSSLValidation = kingpin.Flag(
 		"skip-ssl-verify", "Disable SSL Verify ($CREDHUB_EXPORTER_SKIP_SSL_VERIFY)",
@@ -175,8 +183,9 @@ func main() {
 		filters = append(filters, exp)
 	}
 
-	// todo cacert
-	credhubCollector := NewCredhubCollector(*metricsDirector, *metricsEnvironment, filters, credhubCli)
+	credhubCollector := NewCredhubCollector(*metricsDeployment, *metricsEnvironment, filters, credhubCli)
+	credhubCollector.filterNameLike(*filterNameLike)
+	credhubCollector.filterPath(*filterPath)
 	prometheus.MustRegister(credhubCollector)
 
 	handler := prometheusHandler()

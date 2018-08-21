@@ -49,7 +49,7 @@ uaac client add prometheus-credhub \
   --name prometheus-credhub \
   --secret prometheus-credhub-client-secret \
   --authorized_grant_types client_credentials,refresh_token \
-  --authorities creadhub.read
+  --authorities creadhub.read,creadhub.write
 ```
 
 ### Flags
@@ -61,10 +61,12 @@ uaac client add prometheus-credhub \
 | `credhub.client-secret`<br />`CREDHUB_EXPORTER_CLIENT_SECRET`               | Yes      |            | Credhub Client Secret                                                                                                                                                                                                                 |
 | `credhub.proxy`<br />`CREDHUB_EXPORTER_PROXY`                               | No       |            | Socks proxy to open before connecting to credub                                                                                                                                                                                       |
 | `credhub.ca-certs-path`<br />`CREDHUB_EXPORTER_CA_CERTS_PATH`               | No       |            | Path to CA certificate to use when connecting credhub                                                                                                                                                                                 |
-| `filters.generic-certificates`<br />`CREDHUB_EXPORTER_GENERIC_CERTIFICATES` | No       | `[]`       | Json list of <regexp> to match generic credentials paths that may contains certificates                                                                                                                                               |
-| `metrics.director-name`<br />`CREDHUB_EXPORTER_METRICS_DIRECTOR`            | Yes      | `bosh`     | Director label to be attached to metrics                                                                                                                                                                                              |
+| `filters.name-like`<br />`CREDHUB_EXPORTER_FILTER_NAMELIKE`                 | No       |            | Fetch from server credentials whose name contains the [query string](https://credhub-api.cfapps.io/#find-credentials) (fetch all credentials when empty)                                                                                                                                             |
+| `filters.path`<br />`CREDHUB_EXPORTER_FILTER_PATH`                          | No       |            | Fetch from server credentials that exist under the provided path (ignored when `--filters.name-like` is not empty)                                                                                                                                  |
+| `filters.generic-certificates`<br />`CREDHUB_EXPORTER_GENERIC_CERTIFICATES` | No       | `[]`       | Json list of \<regexp\> to match against name of certificate objects fetched from server. Only certificate objects whose name match at least one regexp will have an associated metric emitted.                                                                                                                                               |
+| `metrics.deployment-name`<br />`CREDHUB_EXPORTER_METRICS_DEPLOYMENT`        | Yes      |            | Credhub Bosh Deployment Name to be reported as the `deployment` metric label                                                                                                                                                          |
 | `metrics.namespace`<br />`CREDHUB_EXPORTER_METRICS_NAMESPACE`               | No       | `credhub`  | Metrics Namespace                                                                                                                                                                                                                     |
-| `metrics.environment`<br />`CREDHUB_EXPORTER_METRICS_ENVIRONMENT`           | Yes      |            | Credhub Environment label to be attached to metrics                                                                                                                                                                                           |
+| `metrics.environment`<br />`CREDHUB_EXPORTER_METRICS_ENVIRONMENT`           | Yes      |            | Credhub `environment` label to be attached to metrics                                                                                                                                                                                 |
 | `skip-ssl-verify`<br />`CREDHUB_EXPORTER_SKIP_SSL_VERIFY`                   | No       | `false`    | Disable SSL Verify                                                                                                                                                                                                                    |
 | `web.listen-address`<br />`CREDHUB_EXPORTER_WEB_LISTEN_ADDRESS`             | No       | `:9358`    | Address to listen on for web interface and telemetry                                                                                                                                                                                  |
 | `web.telemetry-path`<br />`CREDHUB_EXPORTER_WEB_TELEMETRY_PATH`             | No       | `/metrics` | Path under which to expose Prometheus metrics                                                                                                                                                                                         |
@@ -80,9 +82,9 @@ The exporter returns the following credhub objects metrics:
 
 | Metric                                     | Description                                                            | Labels                                                   |
 | ------                                     | -----------                                                            | ------                                                   |
-| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential | `director`, `environment`, `id`, `name`, `path`          |
-| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate                   | `director`, `environment`, `id`, `name`, `path`, `index` |
-| *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape      | `director`, `environment`                                |
+| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential | `deployment`, `environment`, `id`, `name`, `path`          |
+| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate                   | `deployment`, `environment`, `id`, `name`, `path`, `index` |
+| *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape      | `deployment`, `environment`                                |
 
 ## Contributing
 
