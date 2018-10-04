@@ -105,7 +105,12 @@ func (c CredhubCollector) processCertificates(path string, name string, id strin
 	for idx := 1; len(data) != 0; idx++ {
 		block, rest := pem.Decode(data)
 		data = rest
-		cert, err := x509.ParseCertificate(block.Bytes)
+                if block == nil ||  block.Bytes == nil {
+                        c.scrapeErrorMetric.Add(1.0)
+                        log.Errorf("error while reading certificate '%s'", path)
+                        return nil
+                }
+ 		cert, err := x509.ParseCertificate(block.Bytes)
 		if err != nil {
 			c.scrapeErrorMetric.Add(1.0)
 			log.Errorf("error while reading certificate '%s' : %s", path, err.Error())
