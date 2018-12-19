@@ -152,6 +152,11 @@ func main() {
 			"",
 			true,
 		)))
+	
+	if err != nil {
+		log.Errorf("Error creating Credhub client: %s", err.Error())
+		os.Exit(1)
+	}
 
 	if len(*caCertPath) != 0 {
 		b, err := ioutil.ReadFile(*caCertPath)
@@ -160,11 +165,6 @@ func main() {
 			os.Exit(1)
 		}
 		credhub.CaCerts(string(b))(credhubCli)
-	}
-
-	if err != nil {
-		log.Errorf("Error creating Credhub client: %s", err.Error())
-		os.Exit(1)
 	}
 
 	regexps := []string{}
