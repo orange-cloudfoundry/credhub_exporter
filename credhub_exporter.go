@@ -86,6 +86,10 @@ var (
 	tlsKeyFile = kingpin.Flag(
 		"web.tls.key_file", "Path to a file that contains the TLS private key (PEM format) ($CREDHUB_EXPORTER_WEB_TLS_KEYFILE)",
 	).Envar("CREDHUB_EXPORTER_WEB_TLS_KEYFILE").ExistingFile()
+
+	flushCache = kingpin.Flag(
+		"flush-metrics-cache", "Flush metrics cache on each collection ($CREDHUB_EXPORTER_FLUSH_METRICS_CACHE)",
+	).Envar("CREDHUB_EXPORTER_FLUSH_METRICS_CACHE").Default("false").Bool()
 )
 
 func init() {
@@ -186,6 +190,7 @@ func main() {
 	credhubCollector := NewCredhubCollector(*metricsDeployment, *metricsEnvironment, filters, credhubCli)
 	credhubCollector.filterNameLike(*filterNameLike)
 	credhubCollector.filterPath(*filterPath)
+	credhubCollector.flushCache = *flushCache
 	prometheus.MustRegister(credhubCollector)
 
 	handler := prometheusHandler()

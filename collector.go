@@ -29,6 +29,7 @@ type CredhubCollector struct {
 	certificateExpiresMetrics *prometheus.GaugeVec
 	scrapeErrorMetric         prometheus.Gauge
 	lastScrapeTimestampMetric prometheus.Gauge
+	flushCache				  bool
 }
 
 // NewCredhubCollector -
@@ -151,6 +152,12 @@ func (c CredhubCollector) filterCertificates(name string, cred credentials.Crede
 
 func (c CredhubCollector) Collect(ch chan<- prometheus.Metric) {
 	log.Debugf("collecting credhub metrics")
+	if c.flushCache {
+		log.Debugf("flushing credhub metrics cache")
+		c.credentialMetrics.Reset()
+		c.certificateExpiresMetrics.Reset()
+	}
+
 	c.scrapeErrorMetric.Set(0.0)
 	c.lastScrapeTimestampMetric.Set(float64(time.Now().Unix()))
 
@@ -198,6 +205,7 @@ func (c CredhubCollector) Collect(ch chan<- prometheus.Metric) {
 			c.filterCertificates(name, cred)
 		}
 	}
+
 
 	c.credentialMetrics.Collect(ch)
 	c.certificateExpiresMetrics.Collect(ch)
