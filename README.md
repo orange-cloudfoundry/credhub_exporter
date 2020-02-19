@@ -73,7 +73,8 @@ uaac client add prometheus-credhub \
 | `web.auth.username`<br />`CREDHUB_EXPORTER_WEB_AUTH_USERNAME`               | No       |            | Username for web interface basic auth                                                                                                                                                                                                 |
 | `web.auth.password`<br />`CREDHUB_EXPORTER_WEB_AUTH_PASSWORD`               | No       |            | Password for web interface basic auth                                                                                                                                                                                                 |
 | `web.tls.cert_file`<br />`CREDHUB_EXPORTER_WEB_TLS_CERTFILE`                | No       |            | Path to a file that contains the TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate |
-| `web.tls.key_file`<br />`CREDHUB_EXPORTER_WEB_TLS_KEYFILE`                  | No       |            | Path to a file that contains the TLS private key (PEM format)                                                                                                                                                                         |
+| `web.tls.key_file`<br />`CREDHUB_EXPORTER_WEB_TLS_KEYFILE`                  | No       |            | Path to a file that contains the TLS private key (PEM format)        
+| `flush-metrics-cache`<br />`CREDHUB_EXPORTER_FLUSH_METRICS_CACHE`           | No       | `false`    | Flushes the collector `credentialMetrics` and `certificateExpiresMetrics` vector to prevent deleted credentials from continuing to report.                                                                                                                                                                
 
 
 ### Metrics
