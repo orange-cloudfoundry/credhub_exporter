@@ -5,6 +5,7 @@ import (
 	"code.cloudfoundry.org/credhub-cli/credhub/auth"
 	"encoding/json"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -59,6 +60,10 @@ var (
 		"metrics.deployment-name", "Credhub Bosh Deployment Name to be reported as the deployment metric label ($CREDHUB_EXPORTER_METRICS_DEPLOYMENT)",
 	).Envar("CREDHUB_EXPORTER_METRICS_DEPLOYMENT").Required().String()
 
+	metricsUpdateInterval = kingpin.Flag(
+		"metrics.udpate-interval", "Metrics update interval given as golang duration format ($CREDHUB_EXPORTER_METRICS_UPDATE_INTERVAL)",
+	).Envar("CREDHUB_EXPORTER_METRICS_UPDATE_INTERVAL").Default("6h").Duration()
+
 	skipSSLValidation = kingpin.Flag(
 		"skip-ssl-verify", "Disable SSL Verify ($CREDHUB_EXPORTER_SKIP_SSL_VERIFY)",
 	).Envar("CREDHUB_EXPORTER_SKIP_SSL_VERIFY").Default("false").Bool()
@@ -86,15 +91,7 @@ var (
 	tlsKeyFile = kingpin.Flag(
 		"web.tls.key_file", "Path to a file that contains the TLS private key (PEM format) ($CREDHUB_EXPORTER_WEB_TLS_KEYFILE)",
 	).Envar("CREDHUB_EXPORTER_WEB_TLS_KEYFILE").ExistingFile()
-
-	flushCache = kingpin.Flag(
-		"flush-metrics-cache", "Flush metrics cache on each collection ($CREDHUB_EXPORTER_FLUSH_METRICS_CACHE)",
-	).Envar("CREDHUB_EXPORTER_FLUSH_METRICS_CACHE").Default("false").Bool()
 )
-
-func init() {
-	prometheus.MustRegister(version.NewCollector(*metricsNamespace))
-}
 
 type basicAuthHandler struct {
 	handler  http.HandlerFunc
@@ -114,11 +111,11 @@ func (h *basicAuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func prometheusHandler() http.Handler {
-	handler := prometheus.Handler()
+	handler := promhttp.Handler()
 
 	if *authUsername != "" && *authPassword != "" {
 		handler = &basicAuthHandler{
-			handler:  prometheus.Handler().ServeHTTP,
+			handler:  promhttp.Handler().ServeHTTP,
 			username: *authUsername,
 			password: *authPassword,
 		}
@@ -156,7 +153,7 @@ func main() {
 			"",
 			true,
 		)))
-	
+
 	if err != nil {
 		log.Errorf("Error creating Credhub client: %s", err.Error())
 		os.Exit(1)
@@ -187,22 +184,28 @@ func main() {
 		filters = append(filters, exp)
 	}
 
-	credhubCollector := NewCredhubCollector(*metricsDeployment, *metricsEnvironment, filters, credhubCli)
+	credhubCollector := NewCredhubCollector(
+		*metricsDeployment,
+		*metricsEnvironment,
+		filters,
+		credhubCli,
+	)
 	credhubCollector.filterNameLike(*filterNameLike)
 	credhubCollector.filterPath(*filterPath)
-	credhubCollector.flushCache = *flushCache
-	prometheus.MustRegister(credhubCollector)
+	credhubCollector.run(*metricsUpdateInterval)
 
-	handler := prometheusHandler()
-	http.Handle(*metricsPath, handler)
+	http.Handle(*metricsPath, prometheusHandler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
-             <head><title>Credhub Exporter</title></head>
-             <body>
-             <h1>Credhub Exporter</h1>
-             <p><a href='` + *metricsPath + `'>Metrics</a></p>
-             </body>
-             </html>`))
+		w.Write([]byte(`
+    <html>
+      <head>
+        <title>Credhub Exporter</title>
+      </head>
+      <body>
+        <h1>Credhub Exporter</h1>
+        <p><a href='` + *metricsPath + `'>Metrics</a></p>
+      </body>
+    </html>`))
 	})
 
 	if *tlsCertFile != "" && *tlsKeyFile != "" {
@@ -213,3 +216,7 @@ func main() {
 		log.Fatal(http.ListenAndServe(*listenAddress, nil))
 	}
 }
+
+// Local Variables:
+// ispell-local-dictionary: "american"
+// End:
