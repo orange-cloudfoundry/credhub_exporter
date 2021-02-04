@@ -49,7 +49,7 @@ uaac client add prometheus-credhub \
   --name prometheus-credhub \
   --secret prometheus-credhub-client-secret \
   --authorized_grant_types client_credentials,refresh_token \
-  --authorities creadhub.read,creadhub.write
+  --authorities credhub.read,credhub.write
 ```
 
 ### Flags
