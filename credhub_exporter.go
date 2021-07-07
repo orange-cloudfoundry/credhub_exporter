@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/prometheus/common/log"
+	log "github.com/sirupsen/logrus"
 	"github.com/prometheus/common/version"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
@@ -91,6 +91,16 @@ var (
 	tlsKeyFile = kingpin.Flag(
 		"web.tls.key_file", "Path to a file that contains the TLS private key (PEM format) ($CREDHUB_EXPORTER_WEB_TLS_KEYFILE)",
 	).Envar("CREDHUB_EXPORTER_WEB_TLS_KEYFILE").ExistingFile()
+
+	logLevel = kingpin.Flag(
+		"log.level", "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]",
+	).Default("info").String()
+	logStream = kingpin.Flag(
+		"log.stream", "Write log to given stream. Valid streams: [stdout, stderr]",
+	).Default("stderr").String()
+	logJson = kingpin.Flag(
+		"log.json", "When given, write log in json format",
+	).Bool()
 )
 
 type basicAuthHandler struct {
@@ -130,10 +140,17 @@ var (
 )
 
 func main() {
-	log.AddFlags(kingpin.CommandLine)
 	kingpin.Version(version.Print("credhub_exporter"))
 	kingpin.HelpFlag.Short('h')
 	kingpin.Parse()
+
+	log.SetOutput(os.Stderr)
+	if *logStream == "stdout" {
+		log.SetOutput(os.Stdout)
+	}
+	if *logJson {
+		log.SetFormatter(&log.JSONFormatter{})
+	}
 
 	log.Infoln("Starting credhub_exporter", version.Info())
 	log.Infoln("Build context", version.BuildContext())
