@@ -144,6 +144,10 @@ func main() {
 	kingpin.HelpFlag.Short('h')
 	kingpin.Parse()
 
+	log.SetLevel(log.ErrorLevel)
+	if lvl, err := log.ParseLevel(*logLevel); err == nil {
+		log.SetLevel(lvl)
+	}
 	log.SetOutput(os.Stderr)
 	if *logStream == "stdout" {
 		log.SetOutput(os.Stdout)
