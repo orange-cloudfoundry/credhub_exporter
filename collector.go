@@ -31,6 +31,7 @@ type credential struct {
 	name      string
 	path      string
 	id        string
+	credtype  string
 	certs     []certificate
 }
 
@@ -62,7 +63,7 @@ func NewCredhubCollector(
 			Help:        "Number of seconds since 1970 since last rotation of credhub credential",
 			ConstLabels: prometheus.Labels{"environment": environment, "deployment": deployment},
 		},
-		[]string{"path", "name", "id"},
+		[]string{"path", "name", "id", "type"},
 	)
 
 	certificateExpiresMetrics = promauto.NewGaugeVec(
@@ -232,6 +233,7 @@ func (c CredhubCollector) analyze(results credentials.FindResults) ([]credential
 			name:      parts[len(parts)-1],
 			path:      cred.Name,
 			id:        cred.Id,
+			credtype:  cred.Type,
 			certs:     []certificate{},
 		}
 
@@ -259,7 +261,7 @@ func (c CredhubCollector) writeMetrics(creds []credential, errors int) {
 	c.certificateExpiresMetrics.Reset()
 
 	for _, cred := range creds {
-		c.credentialMetrics.WithLabelValues(cred.path, cred.name, cred.id).Set(float64(cred.createdAt.Unix()))
+		c.credentialMetrics.WithLabelValues(cred.path, cred.name, cred.id, cred.credtype).Set(float64(cred.createdAt.Unix()))
 		for _, cert := range cred.certs {
 			if cert.notAfter == nil {
 				c.scrapeErrorMetric.Add(1.0)
