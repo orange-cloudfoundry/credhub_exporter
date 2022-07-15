@@ -8,7 +8,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.61 // indirect
 	github.com/prometheus/client_golang v1.12.2
-	github.com/prometheus/common v0.36.0
+	github.com/prometheus/common v0.37.0
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
