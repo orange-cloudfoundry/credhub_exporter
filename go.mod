@@ -1,6 +1,6 @@
 module github.com/orange-cloudfoundry/credhub_exporter
 
-go 1.19
+go 1.20
 
 require (
 	code.cloudfoundry.org/credhub-cli v0.0.0-20220926130104-1cecef45ff9a
