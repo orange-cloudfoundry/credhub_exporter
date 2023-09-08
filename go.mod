@@ -1,15 +1,17 @@
 module github.com/orange-cloudfoundry/credhub_exporter
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 require (
-	code.cloudfoundry.org/credhub-cli v0.0.0-20230626130537-af27ecb3ab68
+	code.cloudfoundry.org/credhub-cli v0.0.0-20230904130630-06d67d32ae64
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.92 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.98 // indirect
 	github.com/prometheus/client_golang v1.16.0
 	github.com/prometheus/common v0.44.0
-	github.com/prometheus/procfs v0.11.0 // indirect
+	github.com/prometheus/procfs v0.11.1 // indirect
 	github.com/sirupsen/logrus v1.9.3
 )
 
@@ -23,8 +25,8 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
-	golang.org/x/crypto v0.10.0 // indirect
-	golang.org/x/net v0.11.0 // indirect
-	golang.org/x/sys v0.9.0 // indirect
+	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 )
