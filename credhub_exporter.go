@@ -4,12 +4,11 @@ import (
 	"code.cloudfoundry.org/credhub-cli/credhub"
 	"code.cloudfoundry.org/credhub-cli/credhub/auth"
 	"encoding/json"
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
 	"github.com/prometheus/common/version"
-	"github.com/alecthomas/kingpin/v2"
-	"io/ioutil"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"regexp"
@@ -181,7 +180,7 @@ func main() {
 	}
 
 	if len(*caCertPath) != 0 {
-		b, err := ioutil.ReadFile(*caCertPath)
+		b, err := os.ReadFile(*caCertPath)
 		if err != nil {
 			log.Errorf("unable to read file '%s' : %s", *caCertPath, err.Error())
 			os.Exit(1)
