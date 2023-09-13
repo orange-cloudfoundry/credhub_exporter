@@ -87,7 +87,7 @@ func NewCredhubCollector(
 		},
 	)
 
-	lastScrapeTimesptampMetric := promauto.NewGauge(
+	lastScrapeTimestampMetric := promauto.NewGauge(
 		prometheus.GaugeOpts{
 			Namespace:   "credhub",
 			Subsystem:   "",
@@ -105,7 +105,7 @@ func NewCredhubCollector(
 		credentialMetrics:         credentialMetrics,
 		certificateExpiresMetrics: certificateExpiresMetrics,
 		scrapeErrorMetric:         scrapeErrorMetric,
-		lastScrapeTimestampMetric: lastScrapeTimesptampMetric,
+		lastScrapeTimestampMetric: lastScrapeTimestampMetric,
 	}
 }
 

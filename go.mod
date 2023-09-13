@@ -5,10 +5,10 @@ go 1.21
 toolchain go1.21.1
 
 require (
-	code.cloudfoundry.org/credhub-cli v0.0.0-20230904130630-06d67d32ae64
+	code.cloudfoundry.org/credhub-cli v0.0.0-20230912005203-ed177c58e40c
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.98 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.99 // indirect
 	github.com/prometheus/client_golang v1.16.0
 	github.com/prometheus/common v0.44.0
 	github.com/prometheus/procfs v0.11.1 // indirect

@@ -55,7 +55,7 @@ uaac client add prometheus-credhub \
 ### Flags
 
 | Flag / Environment Variable                                                 | Required | Default    | Description                                                                                                                                                                                                                           |
-| ---------------------------                                                 | -------- | -------    | -----------                                                                                                                                                                                                                           |
+|-----------------------------------------------------------------------------|----------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `credhub.api_url`<br />`CREDHUB_EXPORTER_API_URL`                           | Yes      |            | Credhub API URL                                                                                                                                                                                                                       |
 | `credhub.client-id`<br />`CREDHUB_EXPORTER_CLIENT_ID`                       | Yes      |            | Credhub Client ID (must have the `credhub.read` scope)                                                                                                                                                                                |
 | `credhub.client-secret`<br />`CREDHUB_EXPORTER_CLIENT_SECRET`               | Yes      |            | Credhub Client Secret                                                                                                                                                                                                                 |
@@ -82,11 +82,11 @@ uaac client add prometheus-credhub \
 
 The exporter returns the following credhub objects metrics:
 
-| Metric                                     | Description                                                            | Labels                                                   |
-| ------                                     | -----------                                                            | ------                                                   |
-| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential | `deployment`, `environment`, `id`, `name`, `path`          |
-| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate                   | `deployment`, `environment`, `id`, `name`, `path`, `index` |
-| *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape      | `deployment`, `environment`                                |
+| Metric                                     | Description                                                               | Labels                                                     |
+|--------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------|
+| *metrics.namespace*_credential_created_at  | Unix timestamp of the creation of the last version of a given credential  | `deployment`, `environment`, `id`, `name`, `path`          |
+| *metrics.namespace*_certificate_expires_at | Unix timestamp of the expiration time of a given certificate              | `deployment`, `environment`, `id`, `name`, `path`, `index` |
+| *metrics.namespace*_last_scrap_error       | Number of credentials that the exporter failed to read during last scrape | `deployment`, `environment`                                |
 
 ## Contributing
 
