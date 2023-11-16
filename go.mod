@@ -15,7 +15,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 )
 
-require github.com/alecthomas/kingpin/v2 v2.3.2
+require github.com/alecthomas/kingpin/v2 v2.4.0
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
