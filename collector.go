@@ -150,7 +150,7 @@ func (c CredhubCollector) searchCertificate(info *credential, cred credentials.C
 	log.Debugf("searching for certificates in credential '%s'", cred.Name)
 	bytes, _ := cred.MarshalJSON()
 	raw := string(bytes)
-	raw = strings.Replace(raw, "\\n", "\n", -1)
+	raw = strings.ReplaceAll(raw, "\\n", "\n")
 	certs := []string{}
 	for start := 0; start != -1; {
 		start := strings.Index(raw, beginCertificate)
