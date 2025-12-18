@@ -1,18 +1,19 @@
 package main
 
 import (
-	"code.cloudfoundry.org/credhub-cli/credhub"
-	"code.cloudfoundry.org/credhub-cli/credhub/credentials"
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
-	log "github.com/sirupsen/logrus"
 	"regexp"
 	"strings"
 	"time"
+
+	"code.cloudfoundry.org/credhub-cli/credhub"
+	"code.cloudfoundry.org/credhub-cli/credhub/credentials"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -45,7 +46,6 @@ type CredhubCollector struct {
 	certificateExpiresMetrics *prometheus.GaugeVec
 	scrapeErrorMetric         prometheus.Gauge
 	lastScrapeTimestampMetric prometheus.Gauge
-	flushCache                bool
 }
 
 // NewCredhubCollector -
@@ -109,11 +109,11 @@ func NewCredhubCollector(
 	}
 }
 
-func (c CredhubCollector) filterNameLike(name string) {
+func (c *CredhubCollector) filterNameLike(name string) {
 	c.nameLike = name
 }
 
-func (c CredhubCollector) filterPath(path string) {
+func (c *CredhubCollector) filterPath(path string) {
 	c.path = path
 }
 
@@ -188,9 +188,6 @@ func (c CredhubCollector) run(interval time.Duration) {
 			time.Sleep(interval)
 		}
 	}()
-}
-
-func (c CredhubCollector) update() {
 }
 
 func (c CredhubCollector) search() (credentials.FindResults, error) {

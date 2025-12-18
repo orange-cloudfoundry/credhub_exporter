@@ -1,17 +1,18 @@
 package main
 
 import (
+	"encoding/json"
+	"net/http"
+	"os"
+	"regexp"
+
 	"code.cloudfoundry.org/credhub-cli/credhub"
 	"code.cloudfoundry.org/credhub-cli/credhub/auth"
-	"encoding/json"
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/version"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"os"
-	"regexp"
 )
 
 var (
@@ -46,10 +47,6 @@ var (
 	genericCertificateFilter = kingpin.Flag(
 		"filters.generic-certificates", "Json list of <regexp> to match generic credentials paths that may contains certificates",
 	).Envar("CREDHUB_EXPORTER_GENERIC_CERTIFICATES").Default("[]").String()
-
-	metricsNamespace = kingpin.Flag(
-		"metrics.namespace", "Metrics Namespace ($CREDHUB_EXPORTER_METRICS_NAMESPACE)",
-	).Envar("CREDHUB_EXPORTER_METRICS_NAMESPACE").Default("credhub").String()
 
 	metricsEnvironment = kingpin.Flag(
 		"metrics.environment", "Credhub environment label to be attached to metrics ($CREDHUB_EXPORTER_METRICS_ENVIRONMENT)",
@@ -185,7 +182,10 @@ func main() {
 			log.Errorf("unable to read file '%s' : %s", *caCertPath, err.Error())
 			os.Exit(1)
 		}
-		credhub.CaCerts(string(b))(credhubCli)
+
+		if err := credhub.CaCerts(string(b))(credhubCli); err != nil {
+			log.Errorf("unable to set CA certs: %s", err.Error())
+		}
 	}
 
 	regexps := []string{}
@@ -199,7 +199,7 @@ func main() {
 		exp, err := regexp.Compile(r)
 		if err != nil {
 			log.Errorf("could not compile given regexp '%s' : %s", r, err.Error())
-			os.Exit(1)
+			//os.Exit(1)
 		}
 		filters = append(filters, exp)
 	}
@@ -216,7 +216,7 @@ func main() {
 
 	http.Handle(*metricsPath, prometheusHandler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`
+		_, err := w.Write([]byte(`
     <html>
       <head>
         <title>Credhub Exporter</title>
@@ -226,6 +226,9 @@ func main() {
         <p><a href='` + *metricsPath + `'>Metrics</a></p>
       </body>
     </html>`))
+		if err != nil {
+			log.Errorf("Fail to write response : %s", err.Error())
+		}
 	})
 
 	if *tlsCertFile != "" && *tlsKeyFile != "" {
