@@ -16,7 +16,7 @@ jobs:
 
       - name: Compute docker tags
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v5
+        uses: crazy-max/ghaction-docker-meta@v6
         with:
           images: orangeopensource/credhub-exporter
 
